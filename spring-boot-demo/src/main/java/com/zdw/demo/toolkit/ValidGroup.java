@@ -5,9 +5,9 @@ package com.zdw.demo.toolkit;
  *
  * @author Tomcat
  */
-public class ValidaGroup {
+public class ValidGroup {
 
-    private ValidaGroup() {
+    private ValidGroup() {
     }
 
     public interface Login {
