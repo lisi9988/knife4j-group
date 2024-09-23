@@ -2017,11 +2017,7 @@ public class ModelResolver extends AbstractModelConverter implements ModelConver
                 schema.groups() != null &&
                 schema.groups().length > 0) {
 
-            List<String> groups = new ArrayList<>(schema.groups().length);
-            for (Class<?> group : schema.groups()) {
-                groups.add(group.getSimpleName());
-            }
-            return groups;
+           return Stream.of(schema.groups()).map(Class::getSimpleName).collect(Collectors.toList());
         }
         return null;
     }

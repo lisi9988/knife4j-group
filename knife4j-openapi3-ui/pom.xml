@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.xiaoymin</groupId>
+    <groupId>com.zdw</groupId>
     <artifactId>knife4j-openapi3-ui</artifactId>
     <description>springdoc-openapi的Ui模块</description>
     <version>4.5.0-parameter-group</version>
