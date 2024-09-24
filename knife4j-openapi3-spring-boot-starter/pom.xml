@@ -11,11 +11,17 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <knife4j-group.version>4.5.0-parameter-group-1</knife4j-group.version>
+        <swagger-group.version>2.2.9-parameter-group-1</swagger-group.version>
+        <springdoc-group.version>1.7.0-parameter-group-1</springdoc-group.version>
+    </properties>
+
     <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
     <name>knife4j-openapi3-spring-boot-starter</name>
     <description>Spring Boot autoconfigure</description>
-    <version>4.5.0-parameter-group</version>
+    <version>4.5.0-parameter-group-1</version>
     <url>https://github.com/lisi9988/knife4j-group</url>
 
     <dependencies>
@@ -33,7 +39,7 @@
         <dependency>
             <groupId>io.github.lisi9988</groupId>
             <artifactId>knife4j-openapi3-ui</artifactId>
-            <version>4.5.0-parameter-group</version>
+            <version>${knife4j-group.version}</version>
         </dependency>
 
         <dependency>
@@ -62,22 +68,22 @@
         <dependency>
             <groupId>io.github.lisi9988</groupId>
             <artifactId>springdoc-openapi-common</artifactId>
-            <version>1.7.0-parameter-group</version>
+            <version>${springdoc-group.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-models</artifactId>
-            <version>2.2.9-parameter-group</version>
+            <version>${swagger-group.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>2.2.9-parameter-group</version>
+            <version>${swagger-group.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-core</artifactId>
-            <version>2.2.9-parameter-group</version>
+            <version>${swagger-group.version}</version>
         </dependency>
 
         <dependency>

@@ -11,13 +11,14 @@
 
     <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-group</artifactId>
-    <version>4.5.0-parameter-group</version>
+    <version>4.5.0-parameter-group-1</version>
     <name>knife4j-group</name>
     <description>knife4j-group</description>
 
     <properties>
         <java.encoding>UTF-8</java.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <knife4j-java.version>1.8</knife4j-java.version>
         <knife4j-spotless-maven-plugin.version>2.22.1</knife4j-spotless-maven-plugin.version>
