@@ -1,4 +1,4 @@
-package com.zdw.demo.config;
+package io.github.lisi9988.config;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;

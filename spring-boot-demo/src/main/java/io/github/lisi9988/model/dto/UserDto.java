@@ -1,6 +1,6 @@
-package com.zdw.demo.model.dto;
+package io.github.lisi9988.model.dto;
 
-import com.zdw.demo.toolkit.ValidGroup;
+import io.github.lisi9988.toolkit.ValidGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

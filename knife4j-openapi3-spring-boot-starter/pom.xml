@@ -11,7 +11,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zdw</groupId>
+    <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
     <name>knife4j-openapi3-spring-boot-starter</name>
     <description>Spring Boot autoconfigure</description>
@@ -30,7 +30,7 @@
             <artifactId>knife4j-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.zdw</groupId>
+            <groupId>io.github.lisi9988</groupId>
             <artifactId>knife4j-openapi3-ui</artifactId>
             <version>4.5.0-parameter-group</version>
         </dependency>
@@ -59,22 +59,22 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zdw</groupId>
+            <groupId>io.github.lisi9988</groupId>
             <artifactId>springdoc-openapi-common</artifactId>
             <version>1.7.0-parameter-group</version>
         </dependency>
         <dependency>
-            <groupId>com.zdw</groupId>
+            <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-models</artifactId>
             <version>2.2.9-parameter-group</version>
         </dependency>
         <dependency>
-            <groupId>com.zdw</groupId>
+            <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>2.2.9-parameter-group</version>
         </dependency>
         <dependency>
-            <groupId>com.zdw</groupId>
+            <groupId>io.github.lisi9988</groupId>
             <artifactId>swagger-core</artifactId>
             <version>2.2.9-parameter-group</version>
         </dependency>

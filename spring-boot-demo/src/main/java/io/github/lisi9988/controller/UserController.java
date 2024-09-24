@@ -1,10 +1,10 @@
-package com.zdw.demo.controller;
+package io.github.lisi9988.controller;
 
-import com.zdw.demo.model.dto.UserDto;
-import com.zdw.demo.model.dto.UserPageDto;
-import com.zdw.demo.model.entity.User;
-import com.zdw.demo.toolkit.Result;
-import com.zdw.demo.toolkit.ValidGroup;
+import io.github.lisi9988.model.dto.UserDto;
+import io.github.lisi9988.model.dto.UserPageDto;
+import io.github.lisi9988.model.entity.User;
+import io.github.lisi9988.toolkit.Result;
+import io.github.lisi9988.toolkit.ValidGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;

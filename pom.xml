@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.zdw</groupId>
+    <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-group</artifactId>
     <version>4.5.0-parameter-group</version>
     <name>knife4j-group</name>

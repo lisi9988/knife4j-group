@@ -1,29 +1,37 @@
-package com.zdw.demo.model.entity;
+package io.github.lisi9988.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 用户实体类
+ * 用户-列表请求数据载体
  *
  * @author Tomcat
  */
-@Getter
 @Setter
-@Schema(description = "用户")
-public class User implements Serializable {
+@Getter
+@ToString
+@Schema(description = "用户-列表请求数据载体")
+public class UserPageDto implements Serializable {
 
-    private static final long serialVersionUID = 390249053149258022L;
+    private static final long serialVersionUID = -43159509620715386L;
 
     /**
      * 主键ID
      */
     @Schema(description = "主键ID")
     private Integer id;
+
+    /**
+     * 用户码
+     */
+    @Schema(description = "用户码")
+    private String code;
 
     /**
      * 名称

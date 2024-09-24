@@ -2,7 +2,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.zdw</groupId>
+    <groupId>io.github.lisi9988</groupId>
     <artifactId>swagger-models</artifactId>
     <version>2.2.9-parameter-group</version>
     <name>swagger-models</name>

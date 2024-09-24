@@ -1,4 +1,4 @@
-package com.zdw.demo;
+package io.github.lisi9988;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
