@@ -1387,12 +1387,13 @@ SwaggerBootstrapUi.prototype.basicInfoOAS3 = function (menu) {
  * @param {*} menu
  * @param {*} swud
  * @param {*} oas2 是否v2版本
+ * @param {*} apiGroups
  */
-SwaggerBootstrapUi.prototype.analysisDefinitionAsync = function (menu, swud, oas2) {
+SwaggerBootstrapUi.prototype.analysisDefinitionAsync = function (menu, swud, oas2, apiGroups) {
   if (oas2) {
-    this.analysisDefinitionAsyncOAS2(menu, swud, oas2);
+    this.analysisDefinitionAsyncOAS2(menu, swud, oas2, apiGroups);
   } else {
-    this.analysisDefinitionAsyncOAS3(menu, swud, oas2);
+    this.analysisDefinitionAsyncOAS3(menu, swud, oas2, apiGroups);
   }
 }
 /**
@@ -1400,8 +1401,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsync = function (menu, swud, oas
  * @param {*} menu
  * @param {*} swud
  * @param {*} oas2
+ * @param {*} apiGroups
  */
-SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud, oas2) {
+SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud, oas2, apiGroups) {
   var that = this;
   var modelName = swud.name;
   // 解析definition
@@ -1502,9 +1504,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
                         globalArr.push(name);
                         var addTempValue = null;
                         if (addtionalName != name) {
-                          addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2);
+                          addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2, apiGroups);
                         } else {
-                          addTempValue = that.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2);
+                          addTempValue = that.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2, apiGroups);
                         }
                         let addionalModel = new Knife4jOAS2AdditionalModel(addpties, addtionalName, addTempValue);
                         /**propValue = {
@@ -1526,9 +1528,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
                           globalArr.push(name);
 
                           if (addrefType != name) {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                           } else {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                           }
                           propValue = {
                             'additionalProperties1': addTempValue
@@ -1553,9 +1555,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
                           globalArr.push(name);
 
                           if (addrefType != name) {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                           } else {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                           }
                           var tempAddValue = new Array();
                           tempAddValue.push(addTempValue);
@@ -1599,9 +1601,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
                       // 添加类本身
                       globalArr.push(name);
                       if (refType != name) {
-                        propValue.push(that.findRefDefinition(refType, definitions, false, globalArr, null, oas2));
+                        propValue.push(that.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups));
                       } else {
-                        propValue.push(that.findRefDefinition(refType, definitions, true, globalArr, name, oas2));
+                        propValue.push(that.findRefDefinition(refType, definitions, true, globalArr, name, oas2, apiGroups));
                       }
                     } else {
                       // schema基础类型显示
@@ -1631,9 +1633,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
                     // 添加类本身
                     globalArr.push(name);
                     if (refType != name) {
-                      propValue = that.findRefDefinition(refType, definitions, false, globalArr, null, oas2);
+                      propValue = that.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups);
                     } else {
-                      propValue = that.findRefDefinition(refType, definitions, true, globalArr, null, oas2);
+                      propValue = that.findRefDefinition(refType, definitions, true, globalArr, null, oas2, apiGroups);
                     }
 
                   }
@@ -1668,7 +1670,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
           }
         }
         // //console('开始递归---------------deepTreeTableRefParameter')
-        deepTreeTableRefParameter(swud, that, swud, swud, oas2);
+        deepTreeTableRefParameter(swud, that, swud, swud, oas2, apiGroups);
         // //console(swud)
         // that.currentInstance.difArrs.push(swud);
         swud.init = true;
@@ -1683,8 +1685,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
  * @param {*} menu
  * @param {*} swud
  * @param {*} oas2
+ * @param {*} apiGroups
  */
-SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud, oas2) {
+SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud, oas2, apiGroups) {
   var that = this;
   var modelName = swud.name;
   var definitions = {};
@@ -1727,6 +1730,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
               var spropObj = new SwaggerBootstrapUiProperty();
               // jsr303
               that.validateJSR303(spropObj, propobj);
+              spropObj.groups = propobj.groups;
               // 赋值readOnly属性
               if (propobj.hasOwnProperty('readOnly')) {
                 spropObj.readOnly = propobj['readOnly'];
@@ -1798,9 +1802,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                         globalArr.push(name);
                         var addTempValue = null;
                         if (addtionalName != name) {
-                          addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2);
+                          addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2, apiGroups);
                         } else {
-                          addTempValue = that.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2);
+                          addTempValue = that.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2, apiGroups);
                         }
                         propValue = {
                           'additionalProperties1': addTempValue
@@ -1820,9 +1824,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                           globalArr.push(name);
 
                           if (addrefType != name) {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                           } else {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                           }
                           propValue = {
                             'additionalProperties1': addTempValue
@@ -1847,9 +1851,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                           globalArr.push(name);
 
                           if (addrefType != name) {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                           } else {
-                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                           }
                           var tempAddValue = new Array();
                           tempAddValue.push(addTempValue);
@@ -1872,7 +1876,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                       tempSwdf.name = tempDefName;
                       tempSwdf.ignoreFilterName = tempDefName;
                       let oas3PropertyReader = new OAS3SchemaPropertyReader(propobj);
-                      oas3PropertyReader.readBasicProperty(tempSwdf, that, definitions, oas2);
+                      oas3PropertyReader.readBasicProperty(tempSwdf, that, definitions, oas2, apiGroups);
                       //
                       if (KUtils.checkUndefined(tempSwdf.properties)) {
                         spropObj.properties = tempSwdf.properties;
@@ -1911,9 +1915,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                       // 添加类本身
                       globalArr.push(name);
                       if (refType != name) {
-                        propValue.push(that.findRefDefinition(refType, definitions, false, globalArr, null, oas2));
+                        propValue.push(that.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups));
                       } else {
-                        propValue.push(that.findRefDefinition(refType, definitions, true, globalArr, name, oas2));
+                        propValue.push(that.findRefDefinition(refType, definitions, true, globalArr, name, oas2, apiGroups));
                       }
                     } else {
                       // schema基础类型显示
@@ -1928,7 +1932,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                       tempSwdf.name = tempDefName;
                       tempSwdf.ignoreFilterName = tempDefName;
                       let oas3PropertyReader = new OAS3SchemaPropertyReader(items);
-                      oas3PropertyReader.readBasicProperty(tempSwdf, that, definitions, oas2);
+                      oas3PropertyReader.readBasicProperty(tempSwdf, that, definitions, oas2, apiGroups);
                       //
                       if (KUtils.checkUndefined(tempSwdf.properties)) {
                         spropObj.properties = tempSwdf.properties;
@@ -1955,9 +1959,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                     // 添加类本身
                     globalArr.push(name);
                     if (refType != name) {
-                      propValue = that.findRefDefinition(refType, definitions, false, globalArr, null, oas2);
+                      propValue = that.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups);
                     } else {
-                      propValue = that.findRefDefinition(refType, definitions, true, globalArr, null, oas2);
+                      propValue = that.findRefDefinition(refType, definitions, true, globalArr, null, oas2, apiGroups);
                     }
 
                   }
@@ -1989,10 +1993,18 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
               // addprop
               // 这里判断去重
               if (!that.checkPropertiesExists(swud.properties, spropObj)) {
-                swud.properties.push(spropObj);
-                // 如果当前属性readOnly=true，则实体类value排除此属性的值
-                if (!spropObj.readOnly) {
-                  defiTypeValue[property] = propValue;
+                if (spropObj.groups !== undefined &&
+                  spropObj.groups.length > 0 &&
+                  apiGroups !== 'Void' &&
+                  spropObj.groups.includes("Hidden" + apiGroups)) {
+
+                  // 忽略隐藏属性
+                } else{
+                    swud.properties.push(spropObj);
+                  // 如果当前属性readOnly=true，则实体类value排除此属性的值
+                  if (!spropObj.readOnly) {
+                    defiTypeValue[property] = propValue;
+                  }
                 }
               }
             }
@@ -2001,7 +2013,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
           }
         }
         // //console('开始递归---------------deepTreeTableRefParameter')
-        deepTreeTableRefParameter(swud, that, swud, swud, oas2);
+        deepTreeTableRefParameter(swud, that, swud, swud, oas2, apiGroups);
         // //console(swud)
         // that.currentInstance.difArrs.push(swud);
         swud.init = true;
@@ -3721,7 +3733,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
       var resp = apiInfo.responses;
       var rpcount = 0;
       for (var status in resp) {
-        var swaggerResp = new SwaggerBootstrapUiResponseCode();
+        var swaggerResp = new SwaggerBootstrapUiResponseCode(apiInfo.groups);
         var rescrobj = resp[status];
         swaggerResp.code = status;
         swaggerResp.oas2 = swpinfo.oas2;
@@ -3866,7 +3878,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
         }
         if (rptype != null) {
           // 响应参数
-          var def = that.getDefinitionByName(rptype, swpinfo.oas2);
+          var def = that.getDefinitionByName(rptype, swpinfo.oas2, apiInfo.groups);
           if (def != null) {
             if (arr) {
               var na = new Array();
@@ -3896,11 +3908,11 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
                         resParam.schema = true;
                         // 存在引用类型,修改默认type
                         resParam.type = p.refType;
-                        var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                        var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                         let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         resParam.parentTypes.push(p.refType);
-                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                       }
                     }
                   } else {
@@ -3914,22 +3926,22 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
                           if (p.type != 'array') {
                             resParam.type = p.refType;
                           }
-                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                           let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                           resParam.parentTypes.push(p.refType);
-                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         }
                       } else {
                         resParam.schemaValue = p.type;
                         resParam.schema = true;
                         // 存在引用类型,修改默认type
                         resParam.type = p.type;
-                        var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2);
+                        var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2, apiInfo.groups);
                         let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         resParam.parentTypes.push(p.type);
-                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                       }
                     } else {
                       if (p.refType != null) {
@@ -3940,11 +3952,11 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
                           if (p.type != 'array') {
                             resParam.type = p.refType;
                           }
-                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                           let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                           resParam.parentTypes.push(p.refType);
-                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         }
                       }
                     }
@@ -3997,7 +4009,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
         if (ref.name == definitionType) {
           if (!ref.init) {
             // 如果该类没有加载,则进行加载
-            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref,false);
+            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref,false, apiInfo.groups);
           }
           if (arr) {
             var na = new Array();
@@ -4013,7 +4025,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
         }
       }
       // 响应参数
-      var def = that.getDefinitionByName(definitionType, swpinfo.oas2);
+      var def = that.getDefinitionByName(definitionType, swpinfo.oas2, apiInfo.groups);
       if (def != null) {
         if (def.hasOwnProperty('properties')) {
           var props = def['properties'];
@@ -4032,10 +4044,10 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
                     resParam.schema = true;
                     // 存在引用类型,修改默认type
                     resParam.type = p.refType;
-                    var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
-                    deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
+                    deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     resParam.parentTypes.push(p.refType);
-                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                   }
                 }
               } else {
@@ -4048,19 +4060,19 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
                       if (p.type != 'array') {
                         resParam.type = p.refType;
                       }
-                      var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
-                      deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                      var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
+                      deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                       resParam.parentTypes.push(p.refType);
-                      deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                      deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     }
                   } else {
                     resParam.schemaValue = p.type;
                     // 存在引用类型,修改默认type
                     resParam.type = p.type;
-                    var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2);
-                    deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2, apiInfo.groups);
+                    deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     resParam.parentTypes.push(p.type);
-                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                   }
                 }
               }
@@ -4473,7 +4485,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
       var resp = apiInfo.responses;
       var rpcount = 0;
       for (var status in resp) {
-        var swaggerResp = new SwaggerBootstrapUiResponseCode();
+        var swaggerResp = new SwaggerBootstrapUiResponseCode(apiInfo.groups);
         var rescrobj = resp[status];
         swaggerResp.oas2 = swpinfo.oas2;
         swaggerResp.code = status;
@@ -4627,7 +4639,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
         if (rptype != null) {
           // 查询
           // 响应参数
-          var def = that.getDefinitionByName(rptype, swpinfo.oas2);
+          var def = that.getDefinitionByName(rptype, swpinfo.oas2, apiInfo.groups);
           if (def != null) {
             if (arr) {
               var na = new Array();
@@ -4657,11 +4669,11 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
                         resParam.schema = true;
                         // 存在引用类型,修改默认type
                         resParam.type = p.refType;
-                        var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                        var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                         let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         resParam.parentTypes.push(p.refType);
-                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                       }
                     }
                   } else {
@@ -4675,22 +4687,22 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
                           if (p.type != 'array') {
                             resParam.type = p.refType;
                           }
-                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                           let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                           resParam.parentTypes.push(p.refType);
-                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         }
                       } else {
                         resParam.schemaValue = p.type;
                         resParam.schema = true;
                         // 存在引用类型,修改默认type
                         resParam.type = p.type;
-                        var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2);
+                        var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2, apiInfo.groups);
                         let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         resParam.parentTypes.push(p.type);
-                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                        deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                       }
                     } else {
                       if (p.refType != null) {
@@ -4701,11 +4713,11 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
                           if (p.type != 'array') {
                             resParam.type = p.refType;
                           }
-                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                          var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
                           let _tmpSchemaValue = deepDef != null ? deepDef : p;
-                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                           resParam.parentTypes.push(p.refType);
-                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam);
+                          deepTreeTableResponseRefParameter(swaggerResp, that, _tmpSchemaValue, resParam, apiInfo.groups);
                         }
                       }
                     }
@@ -4768,7 +4780,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
         if (ref.name == definitionType) {
           if (!ref.init) {
             // 如果该类没有加载,则进行加载
-            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref, false);
+            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref, false, apiInfo.groups);
           }
           if (arr) {
             var na = new Array();
@@ -4784,7 +4796,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
         }
       }
       // 响应参数
-      var def = that.getDefinitionByName(definitionType, swpinfo.oas2);
+      var def = that.getDefinitionByName(definitionType, swpinfo.oas2, apiInfo.groups);
       if (def != null) {
         if (def.hasOwnProperty('properties')) {
           var props = def['properties'];
@@ -4803,10 +4815,10 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
                     resParam.schema = true;
                     // 存在引用类型,修改默认type
                     resParam.type = p.refType;
-                    var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
-                    deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
+                    deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     resParam.parentTypes.push(p.refType);
-                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                   }
                 }
               } else {
@@ -4819,19 +4831,19 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
                       if (p.type != 'array') {
                         resParam.type = p.refType;
                       }
-                      var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
-                      deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                      var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiInfo.groups);
+                      deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                       resParam.parentTypes.push(p.refType);
-                      deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                      deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     }
                   } else {
                     resParam.schemaValue = p.type;
                     // 存在引用类型,修改默认type
                     resParam.type = p.type;
-                    var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2);
-                    deepResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    var deepDef = that.getDefinitionByName(p.type, swpinfo.oas2, apiInfo.groups);
+                    deepResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                     resParam.parentTypes.push(p.type);
-                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam);
+                    deepTreeTableResponseRefParameter(swpinfo, that, deepDef, resParam, apiInfo.groups);
                   }
                 }
               }
@@ -5540,7 +5552,7 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
       var ref = schItem['$ref'];
       var className = KUtils.getClassName(ref, swpinfo.oas2);
       minfo.schemaValue = className;
-      var def = that.getDefinitionByName(className, swpinfo.oas2);
+      var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
       if (def != null) {
         minfo.def = def;
         minfo.value = def.value;
@@ -5587,7 +5599,7 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
           minfo.type = className;
         }
         minfo.schemaValue = className;
-        var def = that.getDefinitionByName(className, swpinfo.oas2);
+        var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
         if (def != null) {
           minfo.def = def;
           minfo.value = def.value;
@@ -5604,7 +5616,7 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
             // object
             var className = KUtils.getClassName(addProp['$ref'], swpinfo.oas2);
             if (className != null) {
-              var def = that.getDefinitionByName(className, swpinfo.oas2);
+              var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
               if (def != null) {
                 minfo.def = def;
                 minfo.value = {
@@ -5620,7 +5632,7 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
             var addItems = addProp['items'];
             var className = KUtils.getClassName(addItems['$ref'], swpinfo.oas2);
             if (className != null) {
-              var def = that.getDefinitionByName(className, swpinfo.oas2);
+              var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
               if (def != null) {
                 var addArrValue = new Array();
                 addArrValue.push(def.value)
@@ -5661,7 +5673,7 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
       var className = KUtils.getClassName(ref, swpinfo.oas2);
       // minfo.type=className;
       minfo.schemaValue = className;
-      var def = that.getDefinitionByName(className, swpinfo.oas2);
+      var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
       if (def != null) {
         minfo.def = def;
         minfo.value = def.value;
@@ -5867,7 +5879,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
       var ref = schItem['$ref'];
       var className = KUtils.getClassName(ref, swpinfo.oas2);
       minfo.schemaValue = className;
-      var def = that.getDefinitionByName(className, swpinfo.oas2);
+      var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
       if (def != null) {
         minfo.def = def;
         minfo.value = def.value;
@@ -5960,7 +5972,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
           minfo.type = className;
         }
         minfo.schemaValue = className;
-        var def = that.getDefinitionByName(className, swpinfo.oas2);
+        var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
         if (def != null) {
           minfo.def = def;
           minfo.value = def.value;
@@ -5977,7 +5989,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
             // object
             var className = KUtils.getClassName(addProp['$ref'], swpinfo.oas2);
             if (className != null) {
-              var def = that.getDefinitionByName(className, swpinfo.oas2);
+              var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
               if (def != null) {
                 minfo.def = def;
                 minfo.value = {
@@ -5993,7 +6005,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
             var addItems = addProp['items'];
             var className = KUtils.getClassName(addItems['$ref'], swpinfo.oas2);
             if (className != null) {
-              var def = that.getDefinitionByName(className, swpinfo.oas2);
+              var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
               if (def != null) {
                 var addArrValue = new Array();
                 addArrValue.push(def.value)
@@ -6033,7 +6045,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
       var className = KUtils.getClassName(ref, swpinfo.oas2);
       // minfo.type=className;
       minfo.schemaValue = className;
-      var def = that.getDefinitionByName(className, swpinfo.oas2);
+      var def = that.getDefinitionByName(className, swpinfo.oas2, swpinfo.groups);
       if (def != null) {
         minfo.schema = true;
         minfo.def = def;
@@ -6233,8 +6245,9 @@ SwaggerBootstrapUi.prototype.validateJSR303 = function (parameter, origin) {
  * 根据类名查找definition
  * @param {*} name
  * @param {*} oas
+ * @param {*} apiGroups
  */
-SwaggerBootstrapUi.prototype.getDefinitionByName = function (name, oas) {
+SwaggerBootstrapUi.prototype.getDefinitionByName = function (name, oas, apiGroups) {
   var that = this;
   var def = null;
   // 默认使用v2版本
@@ -6246,7 +6259,7 @@ SwaggerBootstrapUi.prototype.getDefinitionByName = function (name, oas) {
     if (d.name == name) {
       if (!d.init) {
         d.init = true;
-        that.analysisDefinitionAsync(that.currentInstance.swaggerData, d, oasFlag);
+        that.analysisDefinitionAsync(that.currentInstance.swaggerData, d, oasFlag, apiGroups);
       }
       def = d;
       return;
@@ -6264,151 +6277,155 @@ SwaggerBootstrapUi.prototype.getDefinitionByName = function (name, oas) {
  * @param {*} globalArr
  * @param {*} xname
  * @param {*} oas 是否v2版本
+ * @param {*} apiGroups
  */
-SwaggerBootstrapUi.prototype.findRefDefinition = function (definitionName, definitions, flag, globalArr, xname, oas) {
+SwaggerBootstrapUi.prototype.findRefDefinition = function (definitionName, definitions, flag, globalArr, xname, oas, apiGroups) {
   var that = this;
   var defaultValue = '';
-  if (KUtils.checkUndefined(that.currentInstance.definitionValues[definitionName])) {
-    defaultValue = that.currentInstance.definitionValues[definitionName];
-  } else {
-    for (var definition in definitions) {
-      if (definitionName == definition) {
-        // 不解析本身
-        that.log('解析definitionName:' + definitionName);
-        // that.log('是否递归：'+flag);
-        var value = definitions[definition];
-        // 是否有properties
-        if (value.hasOwnProperty('properties')) {
-          var properties = value['properties'];
-          var defiTypeValue = {};
-          for (var property in properties) {
-            var propobj = properties[property];
-            if (!propobj.hasOwnProperty('readOnly') || !propobj['readOnly']) {
-              // 默认string类型
-              var propValue = '';
-              // 判断是否有类型
-              if (propobj.hasOwnProperty('type')) {
-                var type = propobj['type'];
-                // 判断是否有example
-                if (propobj.hasOwnProperty('example')) {
-                  // propValue = propobj['example'];
-                  propValue = KUtils.getExample('example', propobj, '');
-                } else if (propobj.hasOwnProperty('default')) {
-                  propValue = KUtils.getExample('default', propobj, '');
-                } else if (KUtils.checkIsBasicType(type)) {
-                  propValue = KUtils.getBasicTypeValue(type);
-                  // 此处如果是object情况,需要判断additionalProperties属性的情况
-                  if (type == 'object') {
-                    if (propobj.hasOwnProperty('additionalProperties')) {
-                      var addpties = propobj['additionalProperties'];
-                      let addtionalClassFinder = new Knife4jOAS2AdditionalModelClassFinder(addpties, oas);
-                      //var addtionalName = this.deepAdditionalProperties(addpties, oas2);
-                      let addtionalName = addtionalClassFinder.findClassName();
-                      // console.log('递归类型---'+addtionalName)
-                      // 判断是否有ref属性,如果有,存在引用类,否则默认是{}object的情况
-                      if (KUtils.strNotBlank(addtionalName)) {
-                        // console.log('-------------------------addtionalName--------'+addtionalName)
-                        // 添加类本身
-                        if (globalArr.indexOf(addtionalName) == -1) {
-                          globalArr.push(addtionalName);
-                          addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, xname, oas);
-                          let addionalModel = new Knife4jOAS2AdditionalModel(addpties, addtionalName, addTempValue);
-                          propValue = {
-                            'additionalProperties1': addTempValue
-                          };
-                          propValue = addionalModel.additionalMapValue(null);
-                        }
-                      }
-                      // 判断是否有ref属性,如果有,存在引用类,否则默认是{}object的情况
-                      else if (addpties.hasOwnProperty('$ref')) {
-                        var adref = addpties['$ref'];
-                        var regex = new RegExp(KUtils.oasmodel(oas), 'ig');
-                        if (regex.test(adref)) {
-                          var addrefType = RegExp.$1;
-                          var addTempValue = null;
-                          if (!flag) {
-                            if (globalArr.indexOf(addrefType) == -1) {
-                              // console.log('addrefType:'+addrefType)
-                              // 全局类型增加父类型,否则会出现递归死循环
-                              globalArr.push(addrefType);
-                              addTempValue = that.findRefDefinition(addrefType, definitions, flag, globalArr, xname, oas);
-                              propValue = {
-                                'additionalProperties1': addTempValue
-                              };
-                            }
+  for (var definition in definitions) {
+    if (definitionName == definition) {
+      // 不解析本身
+      that.log('解析definitionName:' + definitionName);
+      // that.log('是否递归：'+flag);
+      var value = definitions[definition];
+      // 是否有properties
+      if (value.hasOwnProperty('properties')) {
+        var properties = value['properties'];
+        var defiTypeValue = {};
+        for (var property in properties) {
+          var propobj = properties[property];
+          if (propobj.groups !== undefined &&
+            propobj.groups.length > 0 &&
+            apiGroups !== 'Void' &&
+            propobj.groups.includes("Hidden"+apiGroups)){
 
+            continue;
+          }
+          if (!propobj.hasOwnProperty('readOnly') || !propobj['readOnly']) {
+            // 默认string类型
+            var propValue = '';
+            // 判断是否有类型
+            if (propobj.hasOwnProperty('type')) {
+              var type = propobj['type'];
+              // 判断是否有example
+              if (propobj.hasOwnProperty('example')) {
+                // propValue = propobj['example'];
+                propValue = KUtils.getExample('example', propobj, '');
+              } else if (propobj.hasOwnProperty('default')) {
+                propValue = KUtils.getExample('default', propobj, '');
+              } else if (KUtils.checkIsBasicType(type)) {
+                propValue = KUtils.getBasicTypeValue(type);
+                // 此处如果是object情况,需要判断additionalProperties属性的情况
+                if (type == 'object') {
+                  if (propobj.hasOwnProperty('additionalProperties')) {
+                    var addpties = propobj['additionalProperties'];
+                    let addtionalClassFinder = new Knife4jOAS2AdditionalModelClassFinder(addpties, oas);
+                    //var addtionalName = this.deepAdditionalProperties(addpties, oas2);
+                    let addtionalName = addtionalClassFinder.findClassName();
+                    // console.log('递归类型---'+addtionalName)
+                    // 判断是否有ref属性,如果有,存在引用类,否则默认是{}object的情况
+                    if (KUtils.strNotBlank(addtionalName)) {
+                      // console.log('-------------------------addtionalName--------'+addtionalName)
+                      // 添加类本身
+                      if (globalArr.indexOf(addtionalName) == -1) {
+                        globalArr.push(addtionalName);
+                        addTempValue = that.findRefDefinition(addtionalName, definitions, false, globalArr, xname, oas, apiGroups);
+                        let addionalModel = new Knife4jOAS2AdditionalModel(addpties, addtionalName, addTempValue);
+                        propValue = {
+                          'additionalProperties1': addTempValue
+                        };
+                        propValue = addionalModel.additionalMapValue(null);
+                      }
+                    }
+                    // 判断是否有ref属性,如果有,存在引用类,否则默认是{}object的情况
+                    else if (addpties.hasOwnProperty('$ref')) {
+                      var adref = addpties['$ref'];
+                      var regex = new RegExp(KUtils.oasmodel(oas), 'ig');
+                      if (regex.test(adref)) {
+                        var addrefType = RegExp.$1;
+                        var addTempValue = null;
+                        if (!flag) {
+                          if (globalArr.indexOf(addrefType) == -1) {
+                            // console.log('addrefType:'+addrefType)
+                            // 全局类型增加父类型,否则会出现递归死循环
+                            globalArr.push(addrefType);
+                            addTempValue = that.findRefDefinition(addrefType, definitions, flag, globalArr, xname, oas, apiGroups);
+                            propValue = {
+                              'additionalProperties1': addTempValue
+                            };
                           }
+
                         }
                       }
-                    }
-                  }
-
-
-
-                } else {
-                  if (type == 'array') {
-                    propValue = new Array();
-                    var items = propobj['items'];
-                    var ref = items['$ref'];
-                    if (items.hasOwnProperty('type')) {
-                      if (items['type'] == 'array') {
-                        ref = items['items']['$ref'];
-                      }
-                    }
-                    var regex = new RegExp(KUtils.oasmodel(oas), 'ig');
-                    if (regex.test(ref)) {
-                      var refType = RegExp.$1;
-                      if (!flag) {
-                        // 判断是否存在集合中
-                        if (globalArr.indexOf(refType) != -1) {
-                          // 存在
-                          propValue.push({});
-                        } else {
-                          globalArr.push(definitionName);
-                          propValue.push(that.findRefDefinition(refType, definitions, flag, globalArr, xname, oas));
-                        }
-                      }
-
                     }
                   }
                 }
 
+
+
               } else {
-                // 存在ref
-                if (propobj.hasOwnProperty('$ref')) {
-                  var ref = propobj['$ref'];
+                if (type == 'array') {
+                  propValue = new Array();
+                  var items = propobj['items'];
+                  var ref = items['$ref'];
+                  if (items.hasOwnProperty('type')) {
+                    if (items['type'] == 'array') {
+                      ref = items['items']['$ref'];
+                    }
+                  }
                   var regex = new RegExp(KUtils.oasmodel(oas), 'ig');
                   if (regex.test(ref)) {
                     var refType = RegExp.$1;
-                    // 这里需要递归判断是否是本身,如果是,则退出递归查找
                     if (!flag) {
-                      // if($.inArray(refType,globalArr) != -1){
+                      // 判断是否存在集合中
                       if (globalArr.indexOf(refType) != -1) {
                         // 存在
-                        propValue = {};
+                        propValue.push({});
                       } else {
                         globalArr.push(definitionName);
-                        propValue = that.findRefDefinition(refType, definitions, flag, globalArr, xname, oas);
+                        propValue.push(that.findRefDefinition(refType, definitions, flag, globalArr, xname, oas, apiGroups));
                       }
                     }
-                  }
-                } else {
-                  propValue = {};
-                }
 
+                  }
+                }
               }
-              defiTypeValue[property] = propValue;
+
+            } else {
+              // 存在ref
+              if (propobj.hasOwnProperty('$ref')) {
+                var ref = propobj['$ref'];
+                var regex = new RegExp(KUtils.oasmodel(oas), 'ig');
+                if (regex.test(ref)) {
+                  var refType = RegExp.$1;
+                  // 这里需要递归判断是否是本身,如果是,则退出递归查找
+                  if (!flag) {
+                    // if($.inArray(refType,globalArr) != -1){
+                    if (globalArr.indexOf(refType) != -1) {
+                      // 存在
+                      propValue = {};
+                    } else {
+                      globalArr.push(definitionName);
+                      propValue = that.findRefDefinition(refType, definitions, flag, globalArr, xname, oas, apiGroups);
+                    }
+                  }
+                }
+              } else {
+                propValue = {};
+              }
+
             }
+            defiTypeValue[property] = propValue;
           }
-          defaultValue = defiTypeValue;
-        } else {
-          defaultValue = {};
         }
+        defaultValue = defiTypeValue;
+      } else {
+        defaultValue = {};
       }
     }
-    // 赋值
-    that.currentInstance.definitionValues[definitionName] = defaultValue;
   }
+  // 赋值
+  that.currentInstance.definitionValues[definitionName] = defaultValue;
   return defaultValue;
 }
 
@@ -6467,7 +6484,7 @@ var SwaggerBootstrapUiPathCountDownLatch = function () {
   this.count = 0;
 }
 
-function deepResponseRefParameter(swpinfo, that, def, resParam) {
+function deepResponseRefParameter(swpinfo, that, def, resParam, apiGroups) {
   if (def != null) {
     if (def.hasOwnProperty('properties')) {
       var refParam = new SwaggerBootstrapUiRefParameter();
@@ -6491,9 +6508,9 @@ function deepResponseRefParameter(swpinfo, that, def, resParam) {
               refp.schemaValue = p.refType;
               refp.schema = true;
               if (resParam.name != refp.name || resParam.schemaValue != p.refType) {
-                var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiGroups);
                 if (deepDef != null) {
-                  deepResponseRefParameter(swpinfo, that, deepDef, refp);
+                  deepResponseRefParameter(swpinfo, that, deepDef, refp, apiGroups);
                 }
               }
             }
@@ -6504,7 +6521,7 @@ function deepResponseRefParameter(swpinfo, that, def, resParam) {
   }
 }
 
-function deepTreeTableResponseRefParameter(swpinfo, that, def, resParam) {
+function deepTreeTableResponseRefParameter(swpinfo, that, def, resParam, apiGroups) {
   if (def != null) {
     if (def.hasOwnProperty('properties')) {
       var refParam = new SwaggerBootstrapUiTreeTableRefParameter();
@@ -6541,9 +6558,9 @@ function deepTreeTableResponseRefParameter(swpinfo, that, def, resParam) {
               refp.schemaValue = p.refType;
               refp.schema = true;
               if (resParam.name != refp.name || resParam.schemaValue != p.refType) {
-                var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2);
+                var deepDef = that.getDefinitionByName(p.refType, swpinfo.oas2, apiGroups);
                 if (!checkDeepTypeAppear(refp.parentTypes, p.refType)) {
-                  deepTreeTableResponseRefParameter(swpinfo, that, deepDef, refp);
+                  deepTreeTableResponseRefParameter(swpinfo, that, deepDef, refp, apiGroups);
                 }
               }
             } else {
@@ -6568,8 +6585,9 @@ function deepTreeTableResponseRefParameter(swpinfo, that, def, resParam) {
  * @param def
  * @param apiInfo
  * @param oas2 是否v2版本
+ * @param apiGroups
  */
-function deepTreeTableRefParameter(minfo, that, def, apiInfo, oas2) {
+function deepTreeTableRefParameter(minfo, that, def, apiInfo, oas2, apiGroups) {
   if (def != null) {
     // 查询
     if (KUtils.checkUndefined(that.currentInstance.refTreeTableModels[def.name])) {
@@ -6638,7 +6656,7 @@ function deepTreeTableRefParameter(minfo, that, def, apiInfo, oas2) {
                 refp.schema = true;
                 // 属性名称不同,或者ref类型不同
                 if (minfo.name != refp.name || minfo.schemaValue != p.refType) {
-                  var deepDef = that.getDefinitionByName(p.refType, oas2);
+                  var deepDef = that.getDefinitionByName(p.refType, oas2, apiGroups);
                   if (!checkDeepTypeAppear(refp.parentTypes, p.refType)) {
                     deepTreeTableRefParameter(refp, that, deepDef, apiInfo, oas2);
                   }
@@ -6709,7 +6727,7 @@ function deepRefParameter(minfo, that, def, apiInfo) {
                 refp.schema = true;
                 // 属性名称不同,或者ref类型不同
                 if (minfo.name != refp.name || minfo.schemaValue != p.refType) {
-                  var deepDef = that.getDefinitionByName(p.refType);
+                  var deepDef = that.getDefinitionByName(p.refType, false, apiInfo.groups);
                   deepRefParameter(refp, that, deepDef, apiInfo);
                 }
               }
@@ -6816,7 +6834,7 @@ var SwaggerBootstrapUiModel = function (id, name) {
  * 响应码
  * @constructor
  */
-var SwaggerBootstrapUiResponseCode = function () {
+var SwaggerBootstrapUiResponseCode = function (apiGroups) {
   this.oas2 = false,
     this.code = null;
   this.description = null;
@@ -6839,7 +6857,7 @@ var SwaggerBootstrapUiResponseCode = function () {
   this.responseTreetableRefParameters = new Array();
   this.responseDescriptionFind = function (paths, key, that) {
     if (!this.responseDescriptions) {
-      this.responseDescriptions = getKeyDescriptions(this.responseParameters, that);
+      this.responseDescriptions = getKeyDescriptions(this.responseParameters, that, apiGroups);
     }
     var path = paths.join('>') + '>' + key;
     path = path.replace(/0>/g, '');
@@ -6851,7 +6869,7 @@ var SwaggerBootstrapUiResponseCode = function () {
   }
 }
 
-var getKeyDescriptions = function (target, that, parentTypes) {
+var getKeyDescriptions = function (target, that, parentTypes, apiGroups) {
   var keyList = {};
   if (typeof (target) == 'object') {
     if (Array.isArray(target)) {
@@ -6871,17 +6889,19 @@ var getKeyDescriptions = function (target, that, parentTypes) {
             // parentTypes次数>1此,出现递归
             if (parentTypes.indexOf(objc.schemaValue || objc.refType) == -1) {
               // if ($.inArray(objc.schemaValue || objc.refType, parentTypes) == -1) {
-              parentTypes.push(objc.schemaValue || objc.refType);
-              var def = that.getDefinitionByName(objc.schemaValue || objc.refType);
-              if (def) {
-                if (def.properties) {
-                  // 递归存在相互引用的情况,导致无限递归
-                  keyListTemp = getKeyDescriptions(def.properties, that, parentTypes);
+              if (parentTypes instanceof Array) {
+                parentTypes.push(objc.schemaValue || objc.refType);
+                var def = that.getDefinitionByName(objc.schemaValue || objc.refType, false, apiGroups);
+                if (def) {
+                  if (def.properties) {
+                    // 递归存在相互引用的情况,导致无限递归
+                    keyListTemp = getKeyDescriptions(def.properties, that, parentTypes, apiGroups);
+                  }
                 }
               }
             }
           } else if (objc.params) {
-            keyListTemp = getKeyDescriptions(objc.params, that);
+            keyListTemp = getKeyDescriptions(objc.params, that, apiGroups);
           }
           if (keyListTemp) {
             for (var j in keyListTemp) {
@@ -7443,14 +7463,14 @@ SwaggerBootstrapUiInstance.prototype.getOASDefinitions = function () {
 /***
  * 根据类名查找definition
  */
-SwaggerBootstrapUiInstance.prototype.getDefinitionByName = function (name, oas) {
+SwaggerBootstrapUiInstance.prototype.getDefinitionByName = function (name, oas, apiGroups) {
   var that = this;
   var def = null;
   that.difArrs.forEach(function (d) {
     if (d.name == name) {
       if (!d.init) {
         d.init = true;
-        that.analysisDefinitionAsync(this.currentInstance.swaggerData, d, oas);
+        that.analysisDefinitionAsync(this.currentInstance.swaggerData, d, oas, apiGroups);
       }
       def = d;
       return;

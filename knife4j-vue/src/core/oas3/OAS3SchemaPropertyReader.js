@@ -36,8 +36,11 @@ function OAS3SchemaPropertyReader(schema) {
  * 读取基础properties列表
  * @param {*} swud  SwaggerBootstrapUiDefinition对象实例
  * @param {*} instance  当前SwaggerBootstrapUi对象实例
+ * @param {*} definitions
+ * @param {*} oas2
+ * @param {*} apiGroups
  */
-OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance, definitions, oas2) {
+OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance, definitions, oas2, apiGroups) {
   var defiTypeValue = {};
   let _tempSchemaObject = this.schema;
   // 是否有properties
@@ -121,9 +124,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
                 globalArr.push(name);
                 var addTempValue = null;
                 if (addtionalName != name) {
-                  addTempValue = instance.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2);
+                  addTempValue = instance.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2, apiGroups);
                 } else {
-                  addTempValue = instance.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2);
+                  addTempValue = instance.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2, apiGroups);
                 }
                 propValue = {
                   'additionalProperties1': addTempValue
@@ -143,9 +146,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
                   globalArr.push(name);
 
                   if (addrefType != name) {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                   } else {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                   }
                   propValue = {
                     'additionalProperties1': addTempValue
@@ -170,9 +173,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
                   globalArr.push(name);
 
                   if (addrefType != name) {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                   } else {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                   }
                   var tempAddValue = new Array();
                   tempAddValue.push(addTempValue);
@@ -215,9 +218,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
               // 添加类本身
               globalArr.push(name);
               if (refType != name) {
-                propValue.push(instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2));
+                propValue.push(instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups));
               } else {
-                propValue.push(instance.findRefDefinition(refType, definitions, true, globalArr, name, oas2));
+                propValue.push(instance.findRefDefinition(refType, definitions, true, globalArr, name, oas2, apiGroups));
               }
             } else {
               // schema基础类型显示
@@ -240,9 +243,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
             // 添加类本身
             globalArr.push(name);
             if (refType != name) {
-              propValue = instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2);
+              propValue = instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups);
             } else {
-              propValue = instance.findRefDefinition(refType, definitions, true, globalArr, null, oas2);
+              propValue = instance.findRefDefinition(refType, definitions, true, globalArr, null, oas2, apiGroups);
             }
 
           }
@@ -284,8 +287,9 @@ OAS3SchemaPropertyReader.prototype.readBasicProperty = function (swud, instance,
  * 读取当前对象属性properties列表
  * @param {*} swud SwaggerBootstrapUiDefinition对象实例
  * @param {*} instance 当前SwaggerBootstrapUi对象实例
+ * @param {*} apiGroups
  */
-OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud, instance) {
+OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud, instance, apiGroups) {
   var defiTypeValue = {};
   let _tempSchemaObject = this.schema;
   if (KUtils.checkUndefined(originalSchema)) {
@@ -372,9 +376,9 @@ OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud
                 globalArr.push(name);
                 var addTempValue = null;
                 if (addtionalName != name) {
-                  addTempValue = instance.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2);
+                  addTempValue = instance.findRefDefinition(addtionalName, definitions, false, globalArr, null, oas2, apiGroups);
                 } else {
-                  addTempValue = instance.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2);
+                  addTempValue = instance.findRefDefinition(addtionalName, definitions, true, globalArr, name, oas2, apiGroups);
                 }
                 propValue = {
                   'additionalProperties1': addTempValue
@@ -394,9 +398,9 @@ OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud
                   globalArr.push(name);
 
                   if (addrefType != name) {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                   } else {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                   }
                   propValue = {
                     'additionalProperties1': addTempValue
@@ -421,9 +425,9 @@ OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud
                   globalArr.push(name);
 
                   if (addrefType != name) {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, false, globalArr, null, oas2, apiGroups);
                   } else {
-                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2);
+                    addTempValue = instance.findRefDefinition(addrefType, definitions, true, globalArr, name, oas2, apiGroups);
                   }
                   var tempAddValue = new Array();
                   tempAddValue.push(addTempValue);
@@ -466,9 +470,9 @@ OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud
               // 添加类本身
               globalArr.push(name);
               if (refType != name) {
-                propValue.push(instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2));
+                propValue.push(instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups));
               } else {
-                propValue.push(instance.findRefDefinition(refType, definitions, true, globalArr, name, oas2));
+                propValue.push(instance.findRefDefinition(refType, definitions, true, globalArr, name, oas2, apiGroups));
               }
             } else {
               // schema基础类型显示
@@ -495,9 +499,9 @@ OAS3SchemaPropertyReader.prototype.readProperty = function (originalSchema, swud
             // 添加类本身
             globalArr.push(name);
             if (refType != name) {
-              propValue = instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2);
+              propValue = instance.findRefDefinition(refType, definitions, false, globalArr, null, oas2, apiGroups);
             } else {
-              propValue = instance.findRefDefinition(refType, definitions, true, globalArr, null, oas2);
+              propValue = instance.findRefDefinition(refType, definitions, true, globalArr, null, oas2, apiGroups);
             }
 
           }
