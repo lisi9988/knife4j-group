@@ -12,16 +12,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <knife4j-group.version>4.5.0-parameter-group-1</knife4j-group.version>
-        <swagger-group.version>2.2.9-parameter-group-1</swagger-group.version>
-        <springdoc-group.version>1.7.0-parameter-group-1</springdoc-group.version>
+        <knife4j-group.version>4.5.0-parameter-group-2</knife4j-group.version>
+        <swagger-group.version>2.2.9-parameter-group-2</swagger-group.version>
+        <springdoc-group.version>1.7.0-parameter-group-2</springdoc-group.version>
     </properties>
 
     <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
     <name>knife4j-openapi3-spring-boot-starter</name>
     <description>Spring Boot autoconfigure</description>
-    <version>4.5.0-parameter-group-1</version>
+    <version>4.5.0-parameter-group-2</version>
     <url>https://github.com/lisi9988/knife4j-group</url>
 
     <dependencies>
@@ -119,73 +119,4 @@
         <url>https://github.com/lisi9988/knife4j-group</url>
     </scm>
 
-    <build>
-        <plugins>
-
-            <!--   central发布插件    -->
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>lisi9988</publishingServerId>
-                    <tokenAuth>true</tokenAuth>
-                </configuration>
-            </plugin>
-            <!--   source源码插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--   javadoc插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <configuration>
-                    <executable>C:\Program Files (x86)\GnuPG\bin\gpg.exe</executable>
-                    <keyname>lisi9988</keyname>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>lisi9988</id>
-            <url>https://central.sonatype.com/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
