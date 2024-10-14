@@ -1993,19 +1993,11 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
               // addprop
               // 这里判断去重
               if (!that.checkPropertiesExists(swud.properties, spropObj)) {
-                if (spropObj.groups !== undefined &&
-                  spropObj.groups.length > 0 &&
-                  apiGroups !== 'Void' &&
-                  spropObj.groups.includes("Hidden" + apiGroups)) {
-
-                  // 忽略隐藏属性
-                } else{
                     swud.properties.push(spropObj);
                   // 如果当前属性readOnly=true，则实体类value排除此属性的值
-                  if (!spropObj.readOnly) {
-                    defiTypeValue[property] = propValue;
-                  }
-                }
+                    if (!spropObj.readOnly) {
+                      defiTypeValue[property] = propValue;
+                    }
               }
             }
             // console.log('proValue:', defiTypeValue)
