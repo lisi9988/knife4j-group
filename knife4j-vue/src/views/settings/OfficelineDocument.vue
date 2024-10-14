@@ -187,7 +187,7 @@ export default {
                               key,
                               schemaName
                             );
-                            model = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, model);
+                            model = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, model, apiInfo.groups);
                             if (KUtils.checkUndefined(model)) {
                               var children = model.params;
                               if (KUtils.arrNotEmpty(children)) {
@@ -277,7 +277,7 @@ export default {
                           key,
                           schemaName
                         );
-                        model = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, model);
+                        model = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, model, apiInfo.groups);
                         if (KUtils.checkUndefined(model)) {
                           var children = model.params;
                           if (KUtils.arrNotEmpty(children)) {

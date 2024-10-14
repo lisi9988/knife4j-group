@@ -451,7 +451,7 @@ export default {
                     key,
                     schemaName
                   );
-                  model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model);
+                  model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model, apiInfo.groups);
                   // console.log("findmodel")
                   // console.log(model)
                   if (model && model.params) {
@@ -714,6 +714,7 @@ export default {
     initResponseCodeParams() {
       // 遍历响应参数
       var that = this;
+      var apiInfo = this.api;
       var key = Constants.globalTreeTableModelParams + this.swaggerInstance.id;
       // 添加自定义属性
       that.multipCode = this.api.multipartResponseSchema;
@@ -764,7 +765,7 @@ export default {
                           key,
                           schemaName
                         );
-                        model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model);
+                        model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model, apiInfo.groups);
                         if (!KUtils.checkUndefined(param.description)) {
                           //如果参数已经有description，那么就不赋值，否则，取model的description
                           if (KUtils.checkUndefined(model.description)) {
@@ -799,10 +800,22 @@ export default {
 
                   // that.findModelChildren(md, respdata);
                   // 查找后如果没有,则将children置空
-                  if (param.children.length == 0) {
+                  if (param.children.length === 0) {
                     param.children = null;
                   }
-                  nrecodedatas.push(param);
+                  if (param.children !== null && param.children instanceof Array && param.children.length > 0) {
+                      for (let i = 0; i < param.children.length; i++) {
+                        let child = param.children[i];
+                        if (child.groups !== undefined &&
+                          child.groups.length > 0 &&
+                          apiInfo.groups !== 'Void' &&
+                          child.groups.includes("Hidden"+apiInfo.groups)){
+
+                          param.children.splice(i, 1);
+                        }
+                    }
+                  }
+                    nrecodedatas.push(param);
                 }
               });
             }

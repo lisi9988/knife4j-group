@@ -2105,8 +2105,9 @@ SwaggerBootstrapUi.prototype.dynamicAddSchema = function (name) {
  * 异步解析Model的名称-SwaggerModel功能需要
  * @param {当前swagger实例对象id} instanceId
  * @param {model对象} treeTableModel
+ * @param {Controller上的分组} apiGroups
  */
-SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanceId, treeTableModel) {
+SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanceId, treeTableModel,apiGroups) {
   // console.log('analysisDefinitionRefTableModel-异步解析Model的名称-SwaggerModel功能需要');
   //console.log(treeTableModel);
   var that = this;
@@ -2233,7 +2234,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanc
                         // console.log(deepDef)
                         if (KUtils.checkUndefined(deepDef)) {
                           if (!refp.parentTypes.includes(p.refType)) {
-                            deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2);
+                            deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2, apiGroups);
                           }
                         }
 
@@ -2253,7 +2254,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanc
                             // console.log(deepDef)
                             if (KUtils.checkUndefined(deepDef)) {
                               if (!refp.parentTypes.includes(p.refType)) {
-                                deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2);
+                                deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2, apiGroups);
                               }
                             }
                             //判断是否是基础类型
@@ -2294,7 +2295,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanc
                       refp.schemaValue = refp.type;
                       refp.schema = true;
                       if (!refp.parentTypes.includes(refType)) {
-                        deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2);
+                        deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2, apiGroups);
                       }
                     }
                   }
@@ -2440,8 +2441,9 @@ SwaggerBootstrapUi.prototype.getSwaggerModelRefType = function (propobj, oas2) {
  * @param {*} definitions
  * @param {*} deepDef
  * @param {*} originalTreeTableModel
+ * @param {*} apiGroups
  */
-function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef, originalTreeTableModel, that, oas2) {
+function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef, originalTreeTableModel, that, oas2, apiGroups) {
   if (KUtils.checkUndefined(definitions)) {
     for (var key in definitions) {
       if (key == deepDef.name) {
@@ -2461,6 +2463,10 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
             var requiredArrs = def.hasOwnProperty('required') ? def['required'] : new Array();
             for (var pkey in props) {
               var p = props[pkey];
+              // 响应参数分组处理
+              if(p.groups !== undefined && apiGroups !== undefined && p.groups.includes("Hidden"+apiGroups)){
+                continue;
+              }
               p.refType = that.getSwaggerModelRefType(p, oas2);
               var refp = new SwaggerBootstrapUiParameter();
               refp.pid = parentRefp.id;
@@ -2525,7 +2531,7 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
                 // 属性名称不同,或者ref类型不同
                 var childdeepDef = that.getOriginalDefinitionByName(p.refType, definitions);
                 if (!refp.parentTypes.includes(p.refType)) {
-                  deepSwaggerModelsTreeTableRefParameter(refp, definitions, childdeepDef, originalTreeTableModel, that, oas2);
+                  deepSwaggerModelsTreeTableRefParameter(refp, definitions, childdeepDef, originalTreeTableModel, that, oas2, apiGroups);
                 }
                 /*  if (!checkDeepTypeAppear(refp.parentTypes, p.refType)) {
                    deepTreeTableRefParameter(refp, that, deepDef, apiInfo);
@@ -2538,7 +2544,7 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
                     // 属性名称不同,或者ref类型不同
                     var childdeepDef = that.getOriginalDefinitionByName(p.refType, definitions);
                     if (!refp.parentTypes.includes(p.refType)) {
-                      deepSwaggerModelsTreeTableRefParameter(refp, definitions, childdeepDef, originalTreeTableModel, that, oas2);
+                      deepSwaggerModelsTreeTableRefParameter(refp, definitions, childdeepDef, originalTreeTableModel, that, oas2, apiGroups);
                     }
                   }
                 }
@@ -2570,7 +2576,7 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
               refp.schemaValue = refp.type;
               refp.schema = true;
               if (!refp.parentTypes.includes(refType)) {
-                deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2);
+                deepSwaggerModelsTreeTableRefParameter(refp, definitions, deepDef, originalTreeTableModel, that, oas2, apiGroups);
               }
             }
 
@@ -3991,7 +3997,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS2 = function (swpinfo) {
         if (ref.name == definitionType) {
           if (!ref.init) {
             // 如果该类没有加载,则进行加载
-            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref);
+            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref,false);
           }
           if (arr) {
             var na = new Array();
@@ -4762,7 +4768,7 @@ SwaggerBootstrapUi.prototype.initApiInfoAsyncOAS3 = function (swpinfo) {
         if (ref.name == definitionType) {
           if (!ref.init) {
             // 如果该类没有加载,则进行加载
-            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref);
+            that.analysisDefinitionAsync(that.currentInstance.swaggerData, ref, false);
           }
           if (arr) {
             var na = new Array();
