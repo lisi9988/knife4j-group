@@ -6849,7 +6849,7 @@ var SwaggerBootstrapUiResponseCode = function (apiGroups) {
   this.responseTreetableRefParameters = new Array();
   this.responseDescriptionFind = function (paths, key, that) {
     if (!this.responseDescriptions) {
-      this.responseDescriptions = getKeyDescriptions(this.responseParameters, that, apiGroups);
+      this.responseDescriptions = getKeyDescriptions(this.responseParameters, that, null, apiGroups);
     }
     var path = paths.join('>') + '>' + key;
     path = path.replace(/0>/g, '');
