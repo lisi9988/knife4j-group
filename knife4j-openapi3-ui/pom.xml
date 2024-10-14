@@ -7,7 +7,7 @@
     <groupId>io.github.lisi9988</groupId>
     <artifactId>knife4j-openapi3-ui</artifactId>
     <description>springdoc-openapi的Ui模块</description>
-    <version>4.5.0-parameter-group-2</version>
+    <version>4.5.0-parameter-group-3</version>
     <url>https://github.com/lisi9988/knife4j-group</url>
 
     <licenses>

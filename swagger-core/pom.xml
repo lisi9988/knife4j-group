@@ -5,7 +5,7 @@
     <artifactId>swagger-core</artifactId>
     <name>swagger-core</name>
     <description>swagger-core</description>
-    <version>2.2.9-parameter-group-2</version>
+    <version>2.2.9-parameter-group-3</version>
     <url>https://github.com/lisi9988/knife4j-group</url>
 
     <dependencies>

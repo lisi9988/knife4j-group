@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.lisi9988</groupId>
 	<artifactId>springdoc-openapi-common</artifactId>
-	<version>1.7.0-parameter-group-2</version>
+	<version>1.7.0-parameter-group-3</version>
 	<description>springdoc-openapi-common</description>
 	<url>https://github.com/lisi9988/knife4j-group</url>
 
@@ -10,7 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<swagger-group.version>2.2.9-parameter-group-2</swagger-group.version>
+		<swagger-group.version>2.2.9-parameter-group-3</swagger-group.version>
 		<spring-cloud.version>3.2.4</spring-cloud.version>
 	</properties>
 
