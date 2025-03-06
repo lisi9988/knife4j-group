@@ -694,10 +694,16 @@ public class ModelResolver extends AbstractModelConverter implements ModelConver
                             }
 
                             if (context.getDefinedModels().containsKey(pName)) {
-                                property = new Schema().$ref(constructRef(pName));
+                                Schema newProperty = new Schema().$ref(constructRef(pName));
+                                newProperty.setGroups(property.getGroups());
+                                newProperty.setDescription(property.getDescription());
+                                property = newProperty;
                             }
                         } else if (property.get$ref() != null) {
-                            property = new Schema().$ref(StringUtils.isNotEmpty(property.get$ref()) ? property.get$ref() : property.getName());
+                            Schema newProperty = new Schema().$ref(StringUtils.isNotEmpty(property.get$ref()) ? property.get$ref() : property.getName());
+                            newProperty.setGroups(property.getGroups());
+                            newProperty.setDescription(property.getDescription());
+                            property = newProperty;
                         }
                     }
                     property.setName(propName);
@@ -884,10 +890,16 @@ public class ModelResolver extends AbstractModelConverter implements ModelConver
             StringUtils.isNotBlank(model.getName()))
         {
             if (context.getDefinedModels().containsKey(model.getName())) {
-                model = new Schema().$ref(constructRef(model.getName()));
+                Schema newModel = new Schema().$ref(constructRef(model.getName()));
+                newModel.setDescription(model.getDescription());
+                newModel.setGroups(model.getGroups());
+                model = newModel;
             }
         } else if (model != null && model.get$ref() != null) {
-            model = new Schema().$ref(StringUtils.isNotEmpty(model.get$ref()) ? model.get$ref() : model.getName());
+            Schema newModel = new Schema().$ref(StringUtils.isNotEmpty(model.get$ref()) ? model.get$ref() : model.getName());
+            newModel.setDescription(model.getDescription());
+            newModel.setGroups(model.getGroups());
+            model = newModel;
         }
 
         if (model != null && resolvedArrayAnnotation != null) {
@@ -972,8 +984,12 @@ public class ModelResolver extends AbstractModelConverter implements ModelConver
             return property;
         try {
             String cloneName = property.getName();
+            String cloneDescription = property.getDescription();
+            List<String> cloneGroups = property.getGroups();
             property = Json.mapper().readValue(Json.pretty(property), Schema.class);
             property.setName(cloneName);
+            property.setDescription(cloneDescription);
+            property.setGroups(cloneGroups);
         } catch (IOException e) {
             LOGGER.error("Could not clone property", e);
         }

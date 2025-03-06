@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>io.github.lisi9988</groupId>
 			<artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-			<version>4.5.0-parameter-group-4</version>
+			<version>4.5.0-parameter-group-5</version>
 		</dependency>
 		<!--  springdoc -->
 	</dependencies>
