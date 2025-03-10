@@ -1991,13 +1991,10 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                 }
               }
               // addprop
-              // 这里判断去重
-              if (!that.checkPropertiesExists(swud.properties, spropObj)) {
-                    swud.properties.push(spropObj);
-                  // 如果当前属性readOnly=true，则实体类value排除此属性的值
-                    if (!spropObj.readOnly) {
-                      defiTypeValue[property] = propValue;
-                    }
+              swud.properties.push(spropObj);
+              // 如果当前属性readOnly=true，则实体类value排除此属性的值
+              if (!spropObj.readOnly) {
+                defiTypeValue[property] = propValue;
               }
             }
             // console.log('proValue:', defiTypeValue)
@@ -2468,9 +2465,6 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
             for (var pkey in props) {
               var p = props[pkey];
               // 响应参数分组处理
-              if(p.groups !== undefined && apiGroups !== undefined && p.groups.includes("Hidden"+apiGroups)){
-                continue;
-              }
               p.refType = that.getSwaggerModelRefType(p, oas2);
               var refp = new SwaggerBootstrapUiParameter();
               refp.pid = parentRefp.id;
@@ -2481,6 +2475,7 @@ function deepSwaggerModelsTreeTableRefParameter(parentRefp, definitions, deepDef
               refp.parentTypes.push(key)
               refp.level = parentRefp.level + 1;
               refp.name = pkey;
+              refp.groups = p.groups;
               refp.type = p.type;
               // 判断非array
               if (p.type != 'array') {
@@ -6249,10 +6244,7 @@ SwaggerBootstrapUi.prototype.getDefinitionByName = function (name, oas, apiGroup
   }
   that.currentInstance.difArrs.forEach(function (d) {
     if (d.name == name) {
-      if (!d.init) {
-        d.init = true;
-        that.analysisDefinitionAsync(that.currentInstance.swaggerData, d, oasFlag, apiGroups);
-      }
+      that.analysisDefinitionAsync(that.currentInstance.swaggerData, d, oasFlag, apiGroups);
       def = d;
       return;
     }
