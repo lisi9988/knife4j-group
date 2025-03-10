@@ -670,7 +670,8 @@ export default {
                 type: nmd.type,
                 validateInstance: nmd.validateInstance,
                 validateStatus: nmd.validateStatus,
-                value: nmd.value
+                value: nmd.value,
+                groups: nmd.groups
               };
               childrenParam.pid = param.id;
               param.children.push(childrenParam);
@@ -804,15 +805,22 @@ export default {
                     param.children = null;
                   }
                   if (param.children !== null && param.children instanceof Array && param.children.length > 0) {
-                      for (let i = 0; i < param.children.length; i++) {
+                    let spliceIndex = [];
+                    let spliceCount = 0;
+                    let len = param.children.length;
+                    for (let i = 0; i < len; i++) {
                         let child = param.children[i];
                         if (child.groups !== undefined &&
                           child.groups.length > 0 &&
                           apiInfo.groups !== 'Void' &&
                           child.groups.includes("Hidden"+apiInfo.groups)){
 
-                          param.children.splice(i, 1);
+                          spliceIndex.push(i-spliceCount);
+                          spliceCount++;
                         }
+                    }
+                    for (let i = 0; i < spliceIndex.length; i++) {
+                      param.children.splice(spliceIndex[i], 1);
                     }
                   }
                     nrecodedatas.push(param);
