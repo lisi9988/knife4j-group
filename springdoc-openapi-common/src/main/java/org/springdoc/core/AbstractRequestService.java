@@ -372,7 +372,7 @@ public abstract class AbstractRequestService {
             }
         }
 
-        getHeaders(methodAttributes, map);
+         getHeaders(methodAttributes, map);
         map.forEach((parameterId, parameter) -> {
             if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
                 parameter.setIn(ParameterIn.QUERY.toString());

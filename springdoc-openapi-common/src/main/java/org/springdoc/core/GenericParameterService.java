@@ -246,6 +246,10 @@ public class GenericParameterService {
 
 		if (paramDoc.getExplode() == null)
 			paramDoc.setExplode(paramCalcul.getExplode());
+
+		if (paramDoc.getGroups() == null)
+			paramDoc.setGroups(paramCalcul.getGroups());
+
 	}
 
 	/**
@@ -332,7 +336,10 @@ public class GenericParameterService {
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
 					schema.setDefault(defaultValue);
+					parameter.setGroups(schema.getGroups());
 				}
+			}else {
+				parameter.setGroups(schema.getGroups());
 			}
 			parameter.setSchema(schema);
 		}

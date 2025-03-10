@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AnnotationsUtils {
@@ -1150,6 +1151,8 @@ public abstract class AnnotationsUtils {
                                                        Class<?> schemaImplementation,
                                                        Components components,
                                                        JsonView jsonViewAnnotation) {
+
+        List<String> groups = resolveGroups(schemaAnnotation);
         if (schemaImplementation != Void.class) {
             Schema schemaObject = resolveSchemaFromType(schemaImplementation, components, jsonViewAnnotation);
             if (StringUtils.isNotBlank(schemaAnnotation.format())) {
@@ -1164,6 +1167,7 @@ public abstract class AnnotationsUtils {
                     return Optional.empty();
                 }
             } else {
+                schemaObject.setGroups(groups);
                 return Optional.of(schemaObject);
             }
 
@@ -1174,7 +1178,9 @@ public abstract class AnnotationsUtils {
                     // default to string
                     schemaFromAnnotation.get().setType("string");
                 }
-                return Optional.of(schemaFromAnnotation.get());
+                Schema schema = schemaFromAnnotation.get();
+                schema.setGroups(groups);
+                return Optional.of(schema);
             } else {
                 Optional<ArraySchema> arraySchemaFromAnnotation = AnnotationsUtils.getArraySchema(arrayAnnotation, components, jsonViewAnnotation);
                 if (arraySchemaFromAnnotation.isPresent()) {
@@ -1182,13 +1188,24 @@ public abstract class AnnotationsUtils {
                         // default to string
                         arraySchemaFromAnnotation.get().getItems().setType("string");
                     }
-                    return Optional.of(arraySchemaFromAnnotation.get());
+                    ArraySchema arraySchema = arraySchemaFromAnnotation.get();
+                    arraySchema.setGroups(groups);
+                    return Optional.of(arraySchema);
                 }
             }
         }
         return Optional.empty();
     }
 
+    public static List<String> resolveGroups(io.swagger.v3.oas.annotations.media.Schema schema) {
+        if (schema != null &&
+                schema.groups() != null &&
+                schema.groups().length > 0) {
+
+            return Stream.of(schema.groups()).map(Class::getSimpleName).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     public static void applyTypes(String[] classTypes, String[] methodTypes, Content content, MediaType mediaType) {
         if (methodTypes != null && methodTypes.length > 0) {
