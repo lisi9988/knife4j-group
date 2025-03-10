@@ -5806,6 +5806,7 @@ SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requi
     minfo.require = requireArray.includes(minfo.name);
   }
   minfo.description = KUtils.replaceMultipLineStr(KUtils.propValue('description', m, ''));
+  minfo.groups = KUtils.propValue('groups', m, null);
   // add at 2019-12-10 09:20:08  判断请求参数类型是否包含format
   // https://github.com/xiaoymin/swagger-bootstrap-ui/issues/161
   // 判断是否有枚举类型
@@ -6485,6 +6486,7 @@ function deepResponseRefParameter(swpinfo, that, def, resParam, apiGroups) {
             refp.name = p.name;
             refp.type = p.type;
             refp.description = KUtils.replaceMultipLineStr(p.description);
+            refp.groups = p.groups;
             // add之前需要判断是否已添加,递归情况有可能重复
             refParam.params.push(refp);
             // 判断类型是否基础类型
@@ -6534,6 +6536,7 @@ function deepTreeTableResponseRefParameter(swpinfo, that, def, resParam, apiGrou
             refp.name = p.name;
             refp.type = p.type;
             refp.description = KUtils.replaceMultipLineStr(p.description);
+            refp.groups = p.groups;
             refp.example = p.example;
             // add之前需要判断是否已添加,递归情况有可能重复
             refParam.params.push(refp);
@@ -6623,6 +6626,7 @@ function deepTreeTableRefParameter(minfo, that, def, apiInfo, oas2, apiGroups) {
               refp.require = p.required;
               refp.example = p.example;
               refp.description = KUtils.replaceMultipLineStr(p.description);
+              refp.groups = p.groups;
               // console.log('deep-----------propfmasdlkfsafdd')
               // console.log(p)
               that.validateJSR303(refp, p.originProperty);
@@ -6703,6 +6707,7 @@ function deepRefParameter(minfo, that, def, apiInfo) {
               refp.in = minfo.in;
               refp.require = p.required;
               refp.description = KUtils.replaceMultipLineStr(p.description);
+              refp.groups = p.groups;
               that.validateJSR303(refp, p.originProperty);
               refParam.params.push(refp);
               // 判断类型是否基础类型
@@ -7256,6 +7261,8 @@ var SwaggerBootstrapUiParameter = function () {
   this.childrenTypes = new Array();
   this.children = null;
   this.parentTypes = new Array();
+
+  this.groups = null;
 }
 
 function SwaggerBootstrapUiParameterLevel() {

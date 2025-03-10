@@ -344,22 +344,37 @@ export default {
      * @param childrens []
      * @param parent ''
      */
-    filterChildrens(keys = [], childrens = [], parent) {
-      if (keys.length === 0) return childrens;
+    filterChildrens(keys = [], childrens = [], parent, apiInfo) {
+      if (keys.length === 0 && childrens.length === 0) return childrens;
       const that = this;
       const arrs = parent
         ? childrens.filter(child => !keys.includes(`${parent}.${child.name}`))
         : childrens.filter(child => !keys.includes(child.name));
-      return arrs.map(child => {
+      let indexArr = [];
+      let index = 0;
+      let indexCount = 0;
+      let childs =  arrs.map(child => {
         child.id = uniqueId("param"); //  这里顺带重置一下 id , 避免与相应参数对象服用时组件 id 相同报错
-        if (child.children)
-          child.children = that.filterChildrens(
-            keys,
-            child.children,
-            child.name
-          );
+        if (child.children){
+          child.children = that.filterChildrens(keys, child.children, child.name, apiInfo);
+        }else {
+          if (child.groups !== undefined &&
+            child.groups.length > 0 &&
+            apiInfo.groups !== 'Void' &&
+            child.groups.includes("Hidden"+apiInfo.groups)) {
+
+            //child.children.splice(index-indexCount, 1);
+            indexArr.push(index-indexCount)
+            indexCount++;
+          }
+        }
+        index++;
         return child;
       });
+      for (let i = 0; i < indexArr.length; i++) {
+        childs.splice(indexArr[i], 1);
+      }
+      return childs;
     },
     initRequestParams() {
       var key = Constants.globalTreeTableModelParams + this.swaggerInstance.id;
@@ -401,6 +416,8 @@ export default {
             } else {
               return true;
             }
+          } else if(pm.groups !== undefined && pm.groups != null && pm.groups.length > 0 && apiInfo.groups !== 'Void' && pm.groups.includes("Hidden"+apiInfo.groups)){
+            return false
           } else {
             return !ignoreParameterAllKeys.includes(pm.name);
           }
@@ -510,7 +527,9 @@ export default {
                             .filter(Boolean);
                           newObj.children = that.filterChildrens(
                             currentIgnores,
-                            childrens
+                            childrens,
+                            newObj.name,
+                            apiInfo
                           );
                         }
                         return newObj;
@@ -804,24 +823,11 @@ export default {
                   if (param.children.length === 0) {
                     param.children = null;
                   }
-                  if (param.children !== null && param.children instanceof Array && param.children.length > 0) {
-                    let spliceIndex = [];
-                    let spliceCount = 0;
-                    let len = param.children.length;
-                    for (let i = 0; i < len; i++) {
-                        let child = param.children[i];
-                        if (child.groups !== undefined &&
-                          child.groups.length > 0 &&
-                          apiInfo.groups !== 'Void' &&
-                          child.groups.includes("Hidden"+apiInfo.groups)){
+                  if (param.children !== null &&
+                    param.children instanceof Array &&
+                    param.children.length > 0) {
 
-                          spliceIndex.push(i-spliceCount);
-                          spliceCount++;
-                        }
-                    }
-                    for (let i = 0; i < spliceIndex.length; i++) {
-                      param.children.splice(spliceIndex[i], 1);
-                    }
+                    that.loopResponseParams(param, apiInfo)
                   }
                     nrecodedatas.push(param);
                 }
@@ -942,6 +948,37 @@ export default {
             }
           }
         }
+      }
+    },
+    // 循环计算响应参数
+    loopResponseParams(param, apiInfo) {
+      if (param.children == null || !(param.children instanceof Array)) {
+        return
+      }
+      let spliceIndex = [];
+      let spliceCount = 0;
+      let len = param.children.length;
+      for (let i = 0; i < len; i++) {
+        let child = param.children[i];
+        if (child.children !== null && child.children instanceof Array && child.children.length > 0) {
+          child.children = child.children.map(child => {
+              const newObj = this.copyNewParameter(child);
+              newObj.pid = param.id;
+              return newObj;
+            });
+          this.loopResponseParams(child, apiInfo);
+        }
+        if (child.groups !== undefined &&
+          child.groups.length > 0 &&
+          apiInfo.groups !== 'Void' &&
+          child.groups.includes("Hidden"+apiInfo.groups)){
+
+          spliceIndex.push(i-spliceCount);
+          spliceCount++;
+        }
+      }
+      for (let i = 0; i < spliceIndex.length; i++) {
+        param.children.splice(spliceIndex[i], 1);
       }
     }
   }
