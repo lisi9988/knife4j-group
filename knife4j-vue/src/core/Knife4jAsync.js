@@ -1994,7 +1994,10 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
                 }
               }
               // addprop
-              swud.properties.push(spropObj);
+              // 这里判断去重
+              if (!that.checkPropertiesExists(swud.properties, spropObj)) {
+                swud.properties.push(spropObj);
+              }
               // 如果当前属性readOnly=true，则实体类value排除此属性的值
               if (!spropObj.readOnly) {
                 defiTypeValue[property] = propValue;
