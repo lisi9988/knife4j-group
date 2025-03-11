@@ -1482,38 +1482,46 @@ export default {
             this.addDebugHeader(newHeader);
           } else {
             // console.log(param)
-            // 判断该参数是否是枚举
-            var enumsMode = "default";
-            if (KUtils.arrNotEmpty(param.enum)) {
-              // 枚举类型，判断是否是数组
-              if (param.type == "array") {
-                enumsMode = "multiple";
+            if (param.groups !== undefined &&
+              param.groups != null &&
+              param.groups.length > 0 &&
+              this.api.groups !== 'Void' &&
+              param.groups.includes("Hidden"+this.api.groups)){
+
+            }else {
+              // 判断该参数是否是枚举
+              var enumsMode = "default";
+              if (KUtils.arrNotEmpty(param.enum)) {
+                // 枚举类型，判断是否是数组
+                if (param.type == "array") {
+                  enumsMode = "multiple";
+                }
               }
-            }
-            var newFormHeader = {
-              id: KUtils.randomMd5(),
-              name: param.name,
-              type: "text",
-              // 是否必须
-              require: param.require,
-              // 文件表单域的target
-              target: null,
-              content: param.txtValue,
-              description: KUtils.propValue("description", param, ""),
-              enums: this.getEnumOptions(param), // 枚举下拉框
-              // 枚举是否支持多选('default' | 'multiple' )
-              enumsMode: enumsMode,
-              new: false
-            };
-            // 判断枚举类型是否为空
-            if (newFormHeader.enums != null) {
-              // 判断content是否为空
-              if (!KUtils.strNotBlank(newFormHeader.content)) {
-                // 默认取第一个枚举值
-                newFormHeader.content = newFormHeader.enums[0].value;
+              var newFormHeader = {
+                id: KUtils.randomMd5(),
+                name: param.name,
+                type: "text",
+                // 是否必须
+                require: param.require,
+                // 文件表单域的target
+                target: null,
+                content: param.txtValue,
+                description: KUtils.propValue("description", param, ""),
+                enums: this.getEnumOptions(param), // 枚举下拉框
+                // 枚举是否支持多选('default' | 'multiple' )
+                enumsMode: enumsMode,
+                new: false
+              };
+              // 判断枚举类型是否为空
+              if (newFormHeader.enums != null) {
+                // 判断content是否为空
+                if (!KUtils.strNotBlank(newFormHeader.content)) {
+                  // 默认取第一个枚举值
+                  newFormHeader.content = newFormHeader.enums[0].value;
+                }
               }
+              this.urlFormData.push(newFormHeader);
             }
-            this.urlFormData.push(newFormHeader);
           }
         });
       }
