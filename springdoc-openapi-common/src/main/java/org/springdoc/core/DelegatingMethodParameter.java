@@ -131,7 +131,7 @@ public class DelegatingMethodParameter extends MethodParameter {
                 });
             } else {
                 String name = pNames != null ? pNames[i] : p.getParameterName();
-                explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
+                explodedParameters.add(new DelegatingMethodParameter(p, name, null, !isRequestBodyParam, false));
             }
         }
         return explodedParameters.toArray(new MethodParameter[0]);
