@@ -454,6 +454,9 @@ export default {
         data.forEach(function (param) {
           if (param.pid == "-1") {
             param.children = null;
+            if (param.groups !== undefined && param.groups.length > 0 && apiInfo.groups !== 'Void'){
+              param.require = param.groups.includes(apiInfo.groups);
+            }
             // 判断该参数是否存在schema参数
             if (param.schema) {
               // 判断当前缓存是否存在
