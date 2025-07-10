@@ -1374,7 +1374,16 @@ export default {
                 newFormHeader.content = newFormHeader.enums[0].value;
               }
             }
-            this.formData.push(newFormHeader);
+            if (param.groups !== undefined &&
+              param.groups !== null &&
+              param.groups.length > 0 &&
+              this.api.groups !== 'Void' &&
+              param.groups.includes("Hidden"+this.api.groups)){
+
+                // 此处隐藏参数
+            }else {
+              this.formData.push(newFormHeader);
+            }
           }
         });
       }
@@ -1487,7 +1496,7 @@ export default {
               param.groups.length > 0 &&
               this.api.groups !== 'Void' &&
               param.groups.includes("Hidden"+this.api.groups)){
-
+              // 此处隐藏参数
             }else {
               // 判断该参数是否是枚举
               var enumsMode = "default";

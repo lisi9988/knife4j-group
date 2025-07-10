@@ -454,7 +454,7 @@ export default {
         data.forEach(function (param) {
           if (param.pid == "-1") {
             param.children = null;
-            if (param.groups !== undefined && param.groups.length > 0 && apiInfo.groups !== 'Void'){
+            if (param.groups !== undefined && param.groups !== null && param.groups.length > 0 && apiInfo.groups !== 'Void'){
               param.require = param.groups.includes(apiInfo.groups);
             }
             // 判断该参数是否存在schema参数
@@ -505,7 +505,7 @@ export default {
                         }
                         newObj.pid = param.id;
                         // 方法的groups 默认是Void, 属性是空数组
-                        if (newObj.groups !== undefined && newObj.groups.length > 0 && apiInfo.groups !== 'Void'){
+                        if (newObj.groups !== undefined && newObj.groups !== null && newObj.groups.length > 0 && apiInfo.groups !== 'Void'){
                           newObj.require = newObj.groups.includes(apiInfo.groups);
                         }
                         if (newObj.children) {
