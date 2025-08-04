@@ -107,7 +107,6 @@ export default {
     },
     modelChange(key) {
       var that = this;
-      var apiInfo = this.api;
       // console("当前激活面板key:" + that.activeKey);
 
       var instanceKey =
@@ -136,7 +135,7 @@ export default {
                 instanceKey,
                 model.name
               );
-              originalModel = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, originalModel, apiInfo.groups);
+              originalModel = that.swagger.analysisDefinitionRefTableModel(that.data.instance.id, originalModel);
               // console.log("初始化完成")
               // console.log(originalModel);
               // console("查找原始model:" + model.name);

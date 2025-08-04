@@ -37,6 +37,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -316,7 +318,9 @@ public class GenericParameterService {
 		else {
 			Schema schema = null;
 			try {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+				if (StringUtils.isNotEmpty(parameterDoc.schema().type()) || !Void.class.equals(parameterDoc.schema().implementation())) {
+					schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+				}
 				// Cast default value
 				if (schema != null && schema.getDefault() != null) {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
@@ -330,16 +334,16 @@ public class GenericParameterService {
 			catch (Exception e) {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
-			if (schema == null) {
+			if (schema == null && parameterDoc.array() != null) {
 				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
 					schema.setDefault(defaultValue);
-					parameter.setGroups(schema.getGroups());
 				}
-			}else {
-				parameter.setGroups(schema.getGroups());
+			}
+			if (parameterDoc.schema() != null && parameterDoc.schema().groups() != null) {
+				parameter.setGroups(Stream.of(parameterDoc.schema().groups()).map(Class::getSimpleName).collect(Collectors.toList()));
 			}
 			parameter.setSchema(schema);
 		}

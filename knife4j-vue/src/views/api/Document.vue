@@ -353,18 +353,18 @@ export default {
       let indexArr = [];
       let index = 0;
       let indexCount = 0;
-      let childs =  arrs.map(child => {
+      let childs = arrs.map(child => {
         child.id = uniqueId("param"); //  这里顺带重置一下 id , 避免与相应参数对象服用时组件 id 相同报错
-        if (child.children){
+        if (child.children) {
           child.children = that.filterChildrens(keys, child.children, child.name, apiInfo);
-        }else {
+        } else {
           if (child.groups !== undefined &&
             child.groups.length > 0 &&
             apiInfo.groups !== 'Void' &&
-            child.groups.includes("Hidden"+apiInfo.groups)) {
+            child.groups.includes("Hidden" + apiInfo.groups)) {
 
             //child.children.splice(index-indexCount, 1);
-            indexArr.push(index-indexCount)
+            indexArr.push(index - indexCount)
             indexCount++;
           }
         }
@@ -416,7 +416,7 @@ export default {
             } else {
               return true;
             }
-          } else if(pm.groups !== undefined && pm.groups != null && pm.groups.length > 0 && apiInfo.groups !== 'Void' && pm.groups.includes("Hidden"+apiInfo.groups)){
+          } else if (pm.groups !== undefined && pm.groups != null && pm.groups.length > 0 && apiInfo.groups !== 'Void' && pm.groups.includes("Hidden" + apiInfo.groups)) {
             return false
           } else {
             return !ignoreParameterAllKeys.includes(pm.name);
@@ -449,35 +449,31 @@ export default {
       let reqParameters = [];
       let ignoreParam = [];
       if (data != null && data.length > 0) {
-        // console("初始化请求参数----------");
-        // console(data);
+        // console.log("初始化请求参数:", JSON.parse(JSON.stringify(data)));
         data.forEach(function (param) {
           if (param.pid == "-1") {
             param.children = null;
-            if (param.groups !== undefined && param.groups !== null && param.groups.length > 0 && apiInfo.groups !== 'Void'){
+            if (param.groups !== undefined && param.groups !== null && param.groups.length > 0 && apiInfo.groups !== 'Void') {
               param.require = param.groups.includes(apiInfo.groups);
             }
             // 判断该参数是否存在schema参数
             if (param.schema) {
               // 判断当前缓存是否存在
               var schemaName = param.schemaValue;
-              // console.log("param,", param)
+              // console.log("param:", param);
               if (KUtils.checkUndefined(schemaName)) {
-                //  //console("schemaValue--checkUndefined");
+                // console.log("key:", key);
+                // console.log("schemaName:", schemaName);
+                // console.log("that.$Knife4jModels.exists:", that.$Knife4jModels.exists(key, schemaName));
                 if (that.$Knife4jModels.exists(key, schemaName)) {
-                  // //console("存在-不用查找---" + schemaName);
-                  // //console(that.$Knife4jModels.instance);
-                  var model = that.$Knife4jModels.getByModelName(
-                    key,
-                    schemaName
-                  );
-                  model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model, apiInfo.groups);
-                  // console.log("findmodel")
-                  // console.log(model)
+                  var model = that.$Knife4jModels.getByModelName(key, schemaName);
+                  // console.log("当前model:", JSON.parse(JSON.stringify(model)));
+                  model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model);
+                  // console.log("当前model:", JSON.parse(JSON.stringify(model)));
                   if (model && model.params) {
                     const childrens = model.params
                       .filter(({ name }) => {
-                        //  过滤第一层忽略的参数
+                        // 过滤第一层忽略的参数
                         return !(
                           (
                             ignoreParameterAllKeys.includes(name) || //  处理 form 表单提交
@@ -497,15 +493,15 @@ export default {
                         );
                         // 记录忽略的属性
                         if (newObj.groups !== undefined &&
-                            newObj.groups.length > 0 &&
-                            apiInfo.groups !== 'Void' &&
-                            newObj.groups.includes("Hidden"+apiInfo.groups)){
+                          newObj.groups.length > 0 &&
+                          apiInfo.groups !== 'Void' &&
+                          newObj.groups.includes("Hidden" + apiInfo.groups)) {
 
                           ignoreParam.push(newObj.name);
                         }
                         newObj.pid = param.id;
                         // 方法的groups 默认是Void, 属性是空数组
-                        if (newObj.groups !== undefined && newObj.groups !== null && newObj.groups.length > 0 && apiInfo.groups !== 'Void'){
+                        if (newObj.groups !== undefined && newObj.groups !== null && newObj.groups.length > 0 && apiInfo.groups !== 'Void') {
                           newObj.require = newObj.groups.includes(apiInfo.groups);
                         }
                         if (newObj.children) {
@@ -554,7 +550,7 @@ export default {
               }
             }
             // json请求把示例参数格式化, formatData 或 pathValue 等参数不需要
-            if (typeof apiInfo.requestValue === 'string'){
+            if (typeof apiInfo.requestValue === 'string') {
               apiInfo.requestValue = JSON.stringify(newJsonValue, null, 4);
             }
             reqParameters.push(param);
@@ -601,8 +597,7 @@ export default {
       } else {
         that.reqParameters = reqParameters;
       }
-      // console.log("document")
-      //console.log(reqParameters);
+      // console.log("当前reqParameters:", JSON.parse(JSON.stringify(reqParameters)));
     },
     deepRootKeys(tmpIncludeKeys, rootKeys) {
       var tmpRooks = [];
@@ -684,7 +679,6 @@ export default {
                 pid: nmd.pid,
                 readOnly: nmd.readOnly,
                 require: nmd.require,
-                //require: this.api.groups.every(group => nmd.groups.includes(group)),
                 schema: nmd.schema,
                 schemaValue: nmd.schemaValue,
                 show: nmd.show,
@@ -788,7 +782,7 @@ export default {
                           key,
                           schemaName
                         );
-                        model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model, apiInfo.groups);
+                        model = that.swagger.analysisDefinitionRefTableModel(that.swaggerInstance.id, model);
                         if (!KUtils.checkUndefined(param.description)) {
                           //如果参数已经有description，那么就不赋值，否则，取model的description
                           if (KUtils.checkUndefined(model.description)) {
@@ -832,11 +826,26 @@ export default {
 
                     that.loopResponseParams(param, apiInfo)
                   }
+                  if (param.groups !== undefined &&
+                    param.groups !== null &&
+                    param.groups.length > 0 &&
+                    apiInfo.groups !== 'Void' &&
+                    param.groups.includes("Hidden" + apiInfo.groups)) {
+
+                    // 隐藏参数
+                  } else {
                     nrecodedatas.push(param);
+                  }
                 }
               });
             }
-            var nresobj = { ...rc, data: nrecodedatas };
+            var nresobj = {...rc, data: nrecodedatas};
+            let buildObjectFromParameters = this.buildObjectFromParameters(nrecodedatas);
+            if (rc.responseJson instanceof Array) {
+              buildObjectFromParameters = [buildObjectFromParameters]
+            }
+            nresobj.responseValue = KUtils.json5stringifyFormat(buildObjectFromParameters, null, '\t');
+            nresobj.responseJson = buildObjectFromParameters;
             if (!that.multipCode) {
               that.multipData = nresobj;
             }
@@ -965,25 +974,80 @@ export default {
         let child = param.children[i];
         if (child.children !== null && child.children instanceof Array && child.children.length > 0) {
           child.children = child.children.map(child => {
-              const newObj = this.copyNewParameter(child);
-              newObj.pid = param.id;
-              return newObj;
-            });
+            const newObj = this.copyNewParameter(child);
+            newObj.pid = param.id;
+            return newObj;
+          });
           this.loopResponseParams(child, apiInfo);
         }
         if (child.groups !== undefined &&
           child.groups.length > 0 &&
           apiInfo.groups !== 'Void' &&
-          child.groups.includes("Hidden"+apiInfo.groups)){
+          child.groups.includes("Hidden" + apiInfo.groups)) {
 
-          spliceIndex.push(i-spliceCount);
+          spliceIndex.push(i - spliceCount);
           spliceCount++;
         }
       }
       for (let i = 0; i < spliceIndex.length; i++) {
         param.children.splice(spliceIndex[i], 1);
       }
-    }
+    },
+
+    /**
+     * 递归构建对象结构
+     * @param {Array} parameterArray SwaggerBootstrapUiParameter 对象数组
+     * @returns {Object} 构建的对象结构
+     */
+    buildObjectFromParameters(parameterArray) {
+      if (!parameterArray || !Array.isArray(parameterArray)) {
+        return {};
+      }
+      const result = {};
+      parameterArray.forEach(param => {
+        if (param && param.name) {
+          // 处理子级参数
+          if (param.children && Array.isArray(param.children) && param.children.length > 0) {
+            // 如果有子级，递归构建
+            if (param.type === 'array') {
+              // 如果是数组类型，创建数组并递归构建子对象
+              result[param.name] = [this.buildObjectFromParameters(param.children)];
+            } else {
+              // 如果是对象类型，递归构建子对象
+              result[param.name] = this.buildObjectFromParameters(param.children);
+            }
+          } else {
+            // 没有子级，根据类型设置默认值
+            result[param.name] = this.getDefaultValue(param);
+          }
+        }
+      });
+
+      return result;
+    },
+    /**
+     * 根据参数类型获取默认值
+     * @param {SwaggerBootstrapUiParameter} param 参数对象
+     * @returns {*} 默认值
+     */
+    getDefaultValue(param) {
+      // 可以根据 childrenTypes 或其他属性来判断类型
+      switch (param.type) {
+        case 'string':
+          return '';
+        case 'number':
+        case 'integer':
+          return 0;
+        case 'boolean':
+          return false;
+        case 'array':
+          return [];
+        case 'object':
+          return {};
+        default:
+          return '';
+      }
+    },
   }
 };
 </script>
