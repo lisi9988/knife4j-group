@@ -5,6 +5,6 @@
 		<dependency>
 			<groupId>io.github.lisi9988</groupId>
 			<artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-			<version>最新版本</version>
+			<version>4.5.0-parameter-group-9</version>
 		</dependency>
 ```
