@@ -16,6 +16,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- 部署时跳过该模块 -->
+		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 	<dependencies>
 		<dependency>
